@@ -33,11 +33,10 @@
     vmwareGuest.enable = true;
   };
 
-  users.extraUsers.khassanov = {
+  users.extraUsers.user = {
     isNormalUser = true;
     uid = 1000;
-    home = "/home/khassanov";
-    description = "Alisher A. Khassanov <alisher@aira.life>";
+    home = "/home/user";
     extraGroups = [ "wheel" "networkmanager" ];
     shell = pkgs.zsh;
     openssh.authorizedKeys.keys = [

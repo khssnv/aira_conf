@@ -6,23 +6,29 @@ then
   echo "Configuration backup at /etc/nixos/configuration.nix.bkp"
 fi
 
-echo "1 Replacing configuration..."
+read -p 'Set hostname: ' hostname
+sed -ir "s/hostName = .aira.;/hostName = \"$hostname\";/g" ./configuration/configuration.nix
+
+read -p 'Set username: ' username
+sed -ir "s/extraUsers.user =/extraUsers.$username =/g" ./configuration/configuration.nix
+sed -ir "s/home.user/\/home\/$username/g" ./configuration/configuration.nix
+
+
+echo "Replacing configuration..."
 cp -rf ./configuration/* /etc/nixos/
 
-echo "2 Set hostname:"
-#TODO: read hostname and set it to hostname conf
-#TODO: set username from user input and set it to hostname
 
-echo "2 Implementing configuration..."
+echo "Implementing configuration..."
 nixos-rebuild switch
 
-echo "3 Please profile password for khassanov"
-passwd khassanov
+
+echo "Please profile password for $username"
+passwd $username
 
 
-echo "4 Setting up dotfiles..."
-su khassanov
+echo "Setting up dotfiles..."
+su $username
 cd ./dotfiles
 sh ./install.sh
 
-echo "5 Done."
+echo "Done."
